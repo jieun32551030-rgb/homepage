@@ -124,10 +124,12 @@
 
 <nav>
     <a href="#" onclick="showSection('home')">🏠 홈</a>
-    <a href="#" onclick="showSection('notice')">📢 가정통신문</a>
-    <a href="#" onclick="showSection('login')">🔑 로그인</a>
-    <a href="#" onclick="showSection('signup')">📝 회원가입</a>
+    <a href="#" id="menu-notice" onclick="showSection('notice')" style="display:none;">📢 가정통신문</a>
+    <a href="#" id="menu-login" onclick="showSection('login')">🔑 로그인</a>
+    <a href="#" id="menu-signup" onclick="showSection('signup')">📝 회원가입</a>
+    <a href="#" id="menu-logout" onclick="handleLogout()" style="display:none;">🚪 로그아웃</a>
 </nav>
+<div id="user-display" style="text-align:center; padding: 10px; color: #2e7d32; font-weight: bold; display:none;"></div>
 
 <div class="container">
     <!-- 홈 화면 -->
@@ -192,7 +194,7 @@
     // Firebase SDK 라이브러리 가져오기 (CDN 방식)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -210,6 +212,43 @@
     const analytics = getAnalytics(app);
     const auth = getAuth(app);
     const db = getFirestore(app);
+
+    // UI 업데이트 함수 (로그인 상태에 따라 메뉴 제어)
+    function updateUI(user) {
+        const menuNotice = document.getElementById('menu-notice');
+        const menuLogin = document.getElementById('menu-login');
+        const menuSignup = document.getElementById('menu-signup');
+        const menuLogout = document.getElementById('menu-logout');
+        const userDisplay = document.getElementById('user-display');
+
+        if (user) {
+            // 로그인 상태일 때
+            menuNotice.style.display = 'inline-block'; // 가정통신문 보이기
+            menuLogin.style.display = 'none';
+            menuSignup.style.display = 'none';
+            menuLogout.style.display = 'inline-block'; // 로그아웃 보이기
+            userDisplay.style.display = 'block';
+            userDisplay.textContent = `${user.email || '관리자'}님, 환영합니다! 👋`;
+        } else {
+            // 로그아웃 상태일 때
+            menuNotice.style.display = 'none'; // 가정통신문 숨기기
+            menuLogin.style.display = 'inline-block';
+            menuSignup.style.display = 'inline-block';
+            menuLogout.style.display = 'none';
+            userDisplay.style.display = 'none';
+            
+            // 만약 현재 보고 있는 화면이 가정통신문이라면 홈으로 이동
+            const noticeSection = document.getElementById('notice');
+            if (noticeSection.classList.contains('active')) {
+                showSection('home');
+            }
+        }
+    }
+
+    // Firebase 인증 상태 변화 감지
+    onAuthStateChanged(auth, (user) => {
+        updateUI(user);
+    });
 
     // 전역 함수로 등록 (HTML 버튼에서 호출 가능하도록 window 객체에 할당)
     window.handleSignup = async function() {
@@ -230,6 +269,8 @@
 
         if (email === 'admin' && pw === '1234') {
             alert('관리자님 환영합니다!');
+            updateUI({ email: '관리자(Admin)' }); // 관리자용 가짜 유저 정보 전달
+            showSection('home');
             return;
         }
 
@@ -250,6 +291,21 @@
             showSection('home');
         } catch (error) {
             alert("구글 로그인 실패: " + error.message);
+        }
+    };
+
+    // 로그아웃 함수
+    window.handleLogout = async function() {
+        try {
+            await signOut(auth);
+            alert("로그아웃 되었습니다.");
+            // 관리자 로그인 등 Firebase 외의 상태도 고려하여 UI 초기화
+            updateUI(null); 
+            showSection('home');
+        } catch (error) {
+            console.error("로그아웃 오류:", error);
+            updateUI(null); // 강제 로그아웃 처리
+            showSection('home');
         }
     };
 </script>

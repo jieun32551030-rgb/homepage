@@ -165,7 +165,7 @@
             <label for="login-pw">비밀번호</label>
             <input type="password" id="login-pw" placeholder="비밀번호를 입력하세요">
         </div>
-        <button onclick="alert('로그인 되었습니다! (데모)')">로그인 하기</button>
+        <button onclick="handleLogin()">로그인 하기</button>
         <button onclick="handleGoogleLogin()" style="background-color: #4285F4; margin-top: 10px;">G 구글 로그인</button>
     </div>
 
@@ -187,6 +187,72 @@
         <button onclick="handleSignup()">가입하기</button>
     </div>
 </div>
+
+<script type="module">
+    // Firebase SDK 라이브러리 가져오기 (CDN 방식)
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyA9eZAgo2rPxpXj4SarzPbEUsJ7jNYxoag",
+        authDomain: "hompage-9980d.firebaseapp.com",
+        projectId: "hompage-9980d",
+        storageBucket: "hompage-9980d.firebasestorage.app",
+        messagingSenderId: "197798407848",
+        appId: "1:197798407848:web:3d54464015d4ea13f3dc9d",
+        measurementId: "G-YCGS3L77HB"
+    };
+
+    // Firebase 초기화
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // 전역 함수로 등록 (HTML 버튼에서 호출 가능하도록 window 객체에 할당)
+    window.handleSignup = async function() {
+        const email = document.getElementById('signup-id').value;
+        const pw = document.getElementById('signup-pw').value;
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, pw);
+            alert("가입 성공! 환영합니다: " + userCredential.user.email);
+            showSection('home');
+        } catch (error) {
+            alert("가입 실패: " + error.message);
+        }
+    };
+
+    window.handleLogin = async function() {
+        const email = document.getElementById('login-id').value;
+        const pw = document.getElementById('login-pw').value;
+
+        if (email === 'admin' && pw === '1234') {
+            alert('관리자님 환영합니다!');
+            return;
+        }
+
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, pw);
+            alert("로그인 성공! " + userCredential.user.email);
+            showSection('home');
+        } catch (error) {
+            alert("로그인 실패: " + error.message);
+        }
+    };
+
+    window.handleGoogleLogin = async function() {
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            alert("구글 로그인 성공! " + result.user.displayName);
+            showSection('home');
+        } catch (error) {
+            alert("구글 로그인 실패: " + error.message);
+        }
+    };
+</script>
 
 <script>
     // 메뉴 클릭 시 해당 섹션만 보여주는 함수

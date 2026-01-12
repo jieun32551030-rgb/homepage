@@ -158,14 +158,15 @@
     <div id="login" class="section">
         <h2>🔑 로그인</h2>
         <div class="form-group">
-            <label for="login-id">아이디</label>
-            <input type="text" id="login-id" placeholder="아이디를 입력하세요">
+            <label for="login-id">이메일</label>
+            <input type="text" id="login-id" placeholder="이메일을 입력하세요">
         </div>
         <div class="form-group">
             <label for="login-pw">비밀번호</label>
             <input type="password" id="login-pw" placeholder="비밀번호를 입력하세요">
         </div>
-        <button onclick="handleLogin()">로그인 하기</button>
+        <button onclick="alert('로그인 되었습니다! (데모)')">로그인 하기</button>
+        <button onclick="handleGoogleLogin()" style="background-color: #4285F4; margin-top: 10px;">G 구글 로그인</button>
     </div>
 
     <!-- 회원가입 화면 -->
@@ -176,14 +177,14 @@
             <input type="text" id="signup-name" placeholder="이름을 입력하세요">
         </div>
         <div class="form-group">
-            <label for="signup-id">아이디</label>
-            <input type="text" id="signup-id" placeholder="사용할 아이디를 입력하세요">
+            <label for="signup-id">이메일</label>
+            <input type="text" id="signup-id" placeholder="이메일을 입력하세요">
         </div>
         <div class="form-group">
             <label for="signup-pw">비밀번호</label>
             <input type="password" id="signup-pw" placeholder="비밀번호를 입력하세요">
         </div>
-        <button onclick="alert('가입을 환영합니다! (데모)')">가입하기</button>
+        <button onclick="handleSignup()">가입하기</button>
     </div>
 </div>
 
@@ -195,17 +196,6 @@
             sections[i].classList.remove('active');
         }
         document.getElementById(sectionId).classList.add('active');
-    }
-
-    function handleLogin() {
-        const id = document.getElementById('login-id').value;
-        const pw = document.getElementById('login-pw').value;
-
-        if (id === 'admin' && pw === '1234') {
-            alert('관리자님 환영합니다!');
-        } else {
-            alert('로그인 되었습니다! (데모)');
-        }
     }
 </script>
 

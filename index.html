@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6학년 우리반 홈페이지</title>
+    <style>
+        body {
+            font-family: 'Jua', sans-serif; /* 귀여운 폰트 적용 */
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4caf50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #388e3c;
+            overflow: hidden;
+            text-align: center;
+        }
+        nav a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        nav a:hover {
+            background-color: #66bb6a;
+            border-radius: 5px;
+        }
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 15px;
+        }
+        .section {
+            display: none; /* 기본적으로 모든 섹션 숨김 */
+            animation: fadeIn 0.5s;
+        }
+        .section.active {
+            display: block; /* 활성화된 섹션만 표시 */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h2 {
+            color: #2e7d32;
+            border-bottom: 2px solid #a5d6a7;
+            padding-bottom: 10px;
+        }
+        .notice-item {
+            background-color: #e8f5e9;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 6px solid #4caf50;
+        }
+        .notice-date {
+            color: #666;
+            font-size: 0.9em;
+            display: block;
+            margin-top: 5px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #c8e6c9;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #4caf50;
+            outline: none;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #388e3c;
+        }
+        .welcome-msg {
+            text-align: center;
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+    </style>
+    <!-- 구글 폰트 (Jua체) 불러오기 -->
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <h1>🏫 6학년 우리반 홈페이지</h1>
+</header>
+
+<nav>
+    <a href="#" onclick="showSection('home')">🏠 홈</a>
+    <a href="#" onclick="showSection('notice')">📢 가정통신문</a>
+    <a href="#" onclick="showSection('login')">🔑 로그인</a>
+    <a href="#" onclick="showSection('signup')">📝 회원가입</a>
+</nav>
+
+<div class="container">
+    <!-- 홈 화면 -->
+    <div id="home" class="section active">
+        <h2>환영합니다! 👋</h2>
+        <div class="welcome-msg">
+            <p>우리반 친구들을 위한 즐거운 온라인 공간입니다.</p>
+            <p>학교 소식도 확인하고, 친구들과 함께해요!</p>
+        </div>
+    </div>
+
+    <!-- 가정통신문 화면 -->
+    <div id="notice" class="section">
+        <h2>📢 가정통신문 알림</h2>
+        <div class="notice-item">
+            <h3>[필독] 다음 주 현장체험학습 안내</h3>
+            <p>다음 주 금요일은 현장체험학습 가는 날입니다. 도시락과 물을 꼭 챙겨오세요!</p>
+            <span class="notice-date">2024-05-20</span>
+        </div>
+        <div class="notice-item">
+            <h3>준비물: 미술 시간 색종이</h3>
+            <p>내일 미술 시간에는 색종이와 풀, 가위가 필요합니다.</p>
+            <span class="notice-date">2024-05-18</span>
+        </div>
+    </div>
+
+    <!-- 로그인 화면 -->
+    <div id="login" class="section">
+        <h2>🔑 로그인</h2>
+        <div class="form-group">
+            <label for="login-id">아이디</label>
+            <input type="text" id="login-id" placeholder="아이디를 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="login-pw">비밀번호</label>
+            <input type="password" id="login-pw" placeholder="비밀번호를 입력하세요">
+        </div>
+        <button onclick="alert('로그인 되었습니다! (데모)')">로그인 하기</button>
+    </div>
+
+    <!-- 회원가입 화면 -->
+    <div id="signup" class="section">
+        <h2>📝 회원가입</h2>
+        <div class="form-group">
+            <label for="signup-name">이름</label>
+            <input type="text" id="signup-name" placeholder="이름을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="signup-id">아이디</label>
+            <input type="text" id="signup-id" placeholder="사용할 아이디를 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="signup-pw">비밀번호</label>
+            <input type="password" id="signup-pw" placeholder="비밀번호를 입력하세요">
+        </div>
+        <button onclick="alert('가입을 환영합니다! (데모)')">가입하기</button>
+    </div>
+</div>
+
+<script>
+    // 메뉴 클릭 시 해당 섹션만 보여주는 함수
+    function showSection(sectionId) {
+        var sections = document.getElementsByClassName('section');
+        for (var i = 0; i < sections.length; i++) {
+            sections[i].classList.remove('active');
+        }
+        document.getElementById(sectionId).classList.add('active');
+    }
+</script>
+
+</body>
+</html>
